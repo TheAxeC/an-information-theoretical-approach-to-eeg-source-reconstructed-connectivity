@@ -1,1 +1,5 @@
-# masterthesis-ai
+# An Information Theoretical Approach to EEG Source-Reconstructed Connectivity
+
+Multiple studies have debated how far connectivity measures on the sensor level can be interpreted in terms of their source-reconstructed counterpart. This thesis takes an information theoretical approach to connectivity. We are interested in seeing a comparison between information theoretical tools and other statistical approaches. More specifically, conditional mutual information, directed information and directed feature information will be discussed. These tools are compared to their statistical counterparts, partial correlation, granger causality and dynamic causal modelling.
+
+The student will start by studying state-of-the-art literature concerning sensor-level connectivity in order to get acquainted with the concept of connectivity. The student will also familiarise himself with information theoretical algorithms. Afterwards, the student will study source-constructed connectivity. The novelty lies in the usage of these information theoretical algorithms for source-reconstructed connectivity. This algorithm will be applied on a dataset for experimental validation.
