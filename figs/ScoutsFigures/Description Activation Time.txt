@@ -1,0 +1,33 @@
+Order of Scouts are defined based on temporal timing (the earlier channels are activated earlier)
+
+CommonScouts
+1:  Activation Time (0-200ms)
+2:  Activation Time (500-700ms) 
+3:  Activation Time (500-700ms)
+4:  Activation Time (500-700ms)
+However, in the the continuous time course of the data, you do see that 2 is activated a bit earlier than 3 and 4
+These regions represent the pathway of the ventral stream activated when words are processed. They are all located on the ending of white matter tracts that connect the inferior frontal area (3 and 4) to inferior temporal gyrus (2) and the temporal pole (1)
+
+AbstractnessScouts
+1: Activation Time (200-400ms)
+2: Activation Time (200-300ms and 400-600ms)
+3: Activation Time (200-400ms)
+4: Activation Time (300-400ms)
+5: Activation Time (300-500ms)
+6: Activation Time (300-400ms)
+7: Activation Time (400-500ms)
+8: Activation Time (500-600ms)
+9: Activation Time (600-700ms)
+
+Note: the time window of semantic processing (truly understanding the meaning of the word) typically happens between 300 and 500ms. So it's very interesting that we find our main differences also in this time window!
+
+ConcretenessScouts
+1: Activation Time (0-100ms)
+2: Activation Time (200-300ms)
+3: Activation Time (300-500ms)
+4: Activation Time (300-600ms)
+5: Activation Time (400-500ms)
+6: Activation Time (400-500ms)
+7: Activation Time (500-600ms)
+8: Activation Time (500-600ms)
+
