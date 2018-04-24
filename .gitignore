@@ -1,6 +1,7 @@
 .DS_Store
 
 data/
+figs/experiments-24-04-2018/
 
 ## Core latex/pdflatex auxiliary files:
 *.aux

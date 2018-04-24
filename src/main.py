@@ -19,6 +19,7 @@ import os
 import sys
 import pickle
 import random
+import copy
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -194,12 +195,12 @@ def generate_timeseries_per_channel(bins, channels, time, func, *X):
     and start the experiments
 """
 
-def compare_common(loc, tmp, fig, data):
+def compare_common(loc, tmp, fig, data, pre="", func=(lambda bins, *X: 
+        mutualInformationMulti(bins, *[x[0:490] for x in X]))):
     # Compare the common time series between abstract, concrete and resting state
     # gen = lambda *X: generate_timeseries_per_channel(200, range(0, 4), range(0, 340), (lambda bins, *X: 
     #     mutualInformationMulti(bins, *[random.sample(set(x), 490) for x in X])), *X)
-    gen = lambda *X: generate_timeseries_per_channel(200, range(0, 4), range(0, 340), (lambda bins, *X: 
-        mutualInformationMulti(bins, *[x[0:490] for x in X])), *X)
+    gen = lambda *X: generate_timeseries_per_channel(200, range(0, 4), range(0, 340), func, *X)
     
     commonAbs = data['CommonAbstractness_TimeSeries']
     commonCon = data['CommonConcreteness_TimeSeries']
@@ -214,10 +215,11 @@ def compare_common(loc, tmp, fig, data):
     concrete = perform_experiment(loc, tmp, 'commonCon', lambda: gen(commonCon))
 
     for i in range(0, 4):
-        visualize_common(loc, fig, [exp1[i], exp2[i], exp3[i]], ['AbsCon', 'AbsRest', 'ConRest'], 'channel-' + str(i), 'Comparison of bivariate mutual information')
-        visualize_common(loc, fig, [rest[i], absract[i], concrete[i]], ['Rest', 'Abs', 'Con'], 'entropy-' + str(i), 'Entropy')
-        visualize_common(loc, fig, [exp1[i], exp2[i], exp3[i], rest[i], absract[i], concrete[i]], ['AbsCon', 'AbsRest', 'ConRest', 'Rest', 'Abs', 'Con'], 'all-channel-' + str(i), 'Comparison of bivariate mutual information')
-        visualize_common(loc, fig, [100*exp1[i]/absract[i], 100*exp1[i]/concrete[i]], ['Abs', 'Con'], 'comp-' + str(i), 'Comparison', ylabel='percentage (%)')
+        # visualize_common(loc, fig, [exp1[i], exp2[i], exp3[i]], ['AbsCon', 'AbsRest', 'ConRest'], pre+'channel-' + str(i), 'Comparison of bivariate mutual information')
+        # visualize_common(loc, fig, [rest[i], absract[i], concrete[i]], ['Rest', 'Abs', 'Con'], pre+'entropy-' + str(i), 'Entropy')
+        visualize_common(loc, fig, [exp1[i], exp2[i], exp3[i], rest[i], absract[i], concrete[i]], ['AbsCon', 'AbsRest', 'ConRest', 'Rest', 'Abs', 'Con'], pre+'all-channel-' + str(i), 'Comparison of bivariate mutual information')
+        visualize_common(loc, fig, [100*exp1[i]/absract[i], 100*exp1[i]/concrete[i]], ['Abs', 'Con'], pre+'comp-' + str(i), 'Comparison', ylabel='percentage (%)')
+    plt.close("all")
     
 def visualize_common(loc, fig, data, names, channel, title, xlabel='time', ylabel='information (bits)'):
     plt.figure(channel)
@@ -231,10 +233,33 @@ def visualize_common(loc, fig, data, names, channel, title, xlabel='time', ylabe
     plt.savefig(loc + fig + channel + ".png")
     plt.draw()
 
+def subject_common(loc, tmp, fig, data, firstx=False, app="alltrials", amount=40):
+    if not firstx:
+        print("\tExperiment for all subject with all trials")
+    else:
+        print("\tExperiment for all subject with first " + str(amount) + " trials")
+    subjects = np.unique(np.array([x.split('/')[1] for x in data['CommonAbstractness_Description']]))
+    cpy = copy.deepcopy(data)
+    for s in subjects:
+        print("\tExperiment for subject: \"" + s + "\"")
+        index_abs = [i for i,item in enumerate(data['CommonAbstractness_Description']) if s+'/' in item]
+        index_con = [i for i,item in enumerate(data['CommonConcreteness_Description']) if s+'/' in item]
+        cpy['CommonAbstractness_TimeSeries'] = data['CommonAbstractness_TimeSeries'][index_abs,:,:]
+        cpy['CommonConcreteness_TimeSeries'] = data['CommonConcreteness_TimeSeries'][index_con,:,:]
+        m = min(len(cpy['CommonAbstractness_TimeSeries']), len(cpy['Common_TimeSeries_rest']), len(cpy['CommonConcreteness_TimeSeries']))
+        if firstx: m = amount
+        compare_common(loc, tmp, fig, cpy, pre=s + "_" + app + "_", func=(
+            lambda bins, *X: mutualInformationMulti(bins, *[x[0:m] for x in X])
+        ))
+
 # The actual experiments
 def experiments(loc, tmp, fig, data):
+    print("\tExperiment for all subject together")
     compare_common(loc, tmp, fig, data)
-
+    subject_common(loc, tmp, fig, data)
+    subject_common(loc, tmp, fig, data, True, app="10trials", amount=10)
+    subject_common(loc, tmp, fig, data, True, app="40trials", amount=40)
+    
 # Perform an experiment and use caching
 def perform_experiment(loc, tmp, name, func, ignore_tmp=False):
     if ignore_tmp or not os.path.isfile(tmp + name + '.pickle'):
