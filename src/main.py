@@ -54,9 +54,15 @@ def convert_mat_to_json(loc_mat, loc_json, mat):
                 eng.convertToJSON(loc_mat, name_mat, name_data, loc_json, name_json, nargout=0)
     return names, True
 
+def delete_json(loc_mat, loc_json, mat):
+    for name_mat in mat:
+        for _, json_file in mat[name_mat]:
+            if os.path.isfile(loc_json + json_file + ".json"):
+                os.remove(loc_json + json_file + ".json")
+
 # convert a nested list with strings into a nested list of floats
 def convert_to_float(lists):
-  return [float(el) if not isinstance(el,list) else convert_to_float(el) for el in lists]
+    return [float(el) if not isinstance(el,list) else convert_to_float(el) for el in lists]
 
 # load a json file containing the neural data
 def load_json(loc, name):
@@ -157,7 +163,8 @@ def mutualInformationMulti(bins, *X):
     elif len(X) == 2:
         return mutualInformation(bins, X[0], X[1])
     else:
-        return mutualInformationMulti(bins, *(X[:-1])) - mutualInformationConditionalMulti(bins, X[-1], *(X[:-1]))
+        elem = (-1)**(len(X))
+        return (elem * mutualInformationMulti(bins, *(X[:-1]))) - (elem * mutualInformationConditionalMulti(bins, X[-1], *(X[:-1])))
 
 """The following functions are used to 
     manipulate the input data
@@ -262,6 +269,7 @@ def experiments(loc, tmp, fig, data):
     
 # Perform an experiment and use caching
 def perform_experiment(loc, tmp, name, func, ignore_tmp=False):
+    return func()
     if ignore_tmp or not os.path.isfile(tmp + name + '.pickle'):
         return picklewriter(loc+tmp, name, func())
     else:
@@ -275,22 +283,25 @@ def ensure_dir(file_path):
 
 # The main execution function
 def main():
-    loc = '../../../../../Documents/data-ai-thesis/'
-    loc_mat = '../../../../../Documents/data-ai-thesis/'
-    mat = {'FinalTimeSeries_Data_withDescription.mat' : [('CommonAbstractness_TimeSeries', 'CommonAbstractness_TimeSeries'), 
-                                    ('Abstractness_TimeSeries', 'Abstractness_TimeSeries'),
-                                    ('Concreteness_TimeSeries', 'Concreteness_TimeSeries'),
-                                    ('CommonConcreteness_TimeSeries', 'CommonConcreteness_TimeSeries'),
-                                    ('CommonAbstractness_Description', 'CommonAbstractness_Description'), 
-                                    ('Abstractness_Description', 'Abstractness_Description'),
-                                    ('Concreteness_Description', 'Concreteness_Description'),
-                                    ('CommonConcreteness_Description', 'CommonConcreteness_Description')
-                                    ],
-            'RSFinalTimeSeries_Alldata.mat' : [('Abstractness_TimeSeries', 'Abstractness_TimeSeries_rest'), 
-                                    ('Common_TimeSeries', 'Common_TimeSeries_rest'),
-                                    ('Concreteness_TimeSeries', 'Concreteness_TimeSeries_rest')
-                                    ]
-            }
+    loc = '../../../data/data-ai-thesis/'
+    loc_mat = '../../../data/data-ai-thesis/'
+    mat = {
+        'FinalTimeSeries_Data_withDescription.mat' : [
+            ('CommonAbstractness_TimeSeries', 'CommonAbstractness_TimeSeries'), 
+            ('Abstractness_TimeSeries', 'Abstractness_TimeSeries'),
+            ('Concreteness_TimeSeries', 'Concreteness_TimeSeries'),
+            ('CommonConcreteness_TimeSeries', 'CommonConcreteness_TimeSeries'),
+            ('CommonAbstractness_Description', 'CommonAbstractness_Description'), 
+            ('Abstractness_Description', 'Abstractness_Description'),
+            ('Concreteness_Description', 'Concreteness_Description'),
+            ('CommonConcreteness_Description', 'CommonConcreteness_Description')
+        ],
+        'RSFinalTimeSeries_Alldata.mat' : [
+            ('Abstractness_TimeSeries', 'Abstractness_TimeSeries_rest'), 
+            ('Common_TimeSeries', 'Common_TimeSeries_rest'),
+            ('Concreteness_TimeSeries', 'Concreteness_TimeSeries_rest')
+        ]
+    }
     
     # Names used for intermediary files
     name = 'pydata'
@@ -299,15 +310,17 @@ def main():
 
     # Use matlab (if required) in order to convert all data into json format
     print('Start of the program')
-    names, new = convert_mat_to_json(loc_mat, loc, mat)
-    if len(names) == 0: return
     
     # Matlab is needed to convert the mat files into python
     # Convert the json files into pickle which loads much faster
     # Conversion is only done if the pickle file does not exist yet
-    if new or not os.path.isfile(loc + name + '.pickle'):
+    if not os.path.isfile(loc + name + '.pickle'):
+        names, new = convert_mat_to_json(loc_mat, loc, mat)
+        if len(names) == 0: return
         print('Converting json files into pickle format')
         jsonconverter(loc, name, names)
+        print('Deleting json files')
+        delete_json(loc_mat, loc, mat)
 
     # After using the previous line of code, we can simply read the pickle file to get our data
     print('Reading the pickle file: "' + name + '.pickle"')
@@ -361,7 +374,6 @@ def tests(data):
     # print(mutualInformationMulti(2, np.transpose(commonAbs[time,0:4]), np.transpose(commonCon[time,0:4])))
     # print(mutualInformationMulti(2, np.transpose(commonCon[time,0:4]), np.transpose(common[time,0:4])))
     # print(mutualInformationMulti(2, np.transpose(commonAbs[time,0:4]), np.transpose(common[time,0:4])))
-
 
 # Entry point for our program
 if __name__ == "__main__":

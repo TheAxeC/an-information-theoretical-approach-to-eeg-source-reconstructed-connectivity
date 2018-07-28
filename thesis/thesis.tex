@@ -1,0 +1,111 @@
+\documentclass[master=mai, masteroption=ecs]{kulemt} 
+% \documentclass[master=ecws, masteroption=ai]{kulemt}
+\setup{title={An Information Theoretical Approach to EEG Source-Reconstructed Connectivity},
+  author={Axel Faes},
+  promotor={Prof.\,dr.\,ir.\ Marc Van Hulle},
+  assessor={Mansoureh Fahimi\\Prof.\,dr. Daniele Marinazzo},
+  assistant={Mansoureh Fahimi}}
+% The following \setup may be removed entirely if no filing card is wanted
+\setup{filingcard,
+  translatedtitle=,
+  udc=681.3*I20,
+  shortabstract={}}
+
+% Choose the main text font (e.g., Latin Modern)
+\setup{font=lm}
+
+%% Some recommended packages.
+\usepackage{booktabs}   %% For formal tables:
+                        %% http://ctan.org/pkg/booktabs
+\usepackage{subcaption} %% For complex figures with subfigures/subcaptions
+                        %% http://ctan.org/pkg/subcaption
+
+\usepackage{array}
+\usepackage{mathpartir}
+\usepackage{xspace}
+\usepackage{stmaryrd}
+\usepackage{amsmath}
+\usepackage{listings}
+% \usepackage{newtxmath}
+\usepackage{float}
+\usepackage{pdfpages}
+\usepackage{bm}
+
+\usepackage{todonotes}
+
+%% Tikz Needed packages
+\usepackage{pgfplots}
+\pgfplotsset{width=7cm,compat=1.8}
+\usepackage{pgfplotstable}
+\renewcommand*{\familydefault}{\sfdefault}
+
+% Finally the hyperref package is used for pdf files.
+% This can be commented out for printed versions.
+\usepackage[pdfusetitle,colorlinks,plainpages=false]{hyperref}
+
+% \input{tex/00-macros}
+
+\begin{document}
+
+\renewcommand{\prefacename}{Acknowledgements}
+\begin{preface}
+  This thesis has been quite a long journey. I was able to get invested into an interesting field of research and learn a lot of new things. Both about research, and about myself. \\ 
+\\
+  I would like to thank everybody who kept me busy and supported me the last year. I would also like to thank the jury for reading the text. 
+\end{preface}
+
+\tableofcontents*
+
+\begin{abstract}
+
+\end{abstract}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+\listoffigures
+
+% Now comes the main text
+\mainmatter
+
+\chapter{Introduction}
+\input{tex/introduction}
+
+\chapter{Source Reconstruction}
+\input{tex/source}
+
+\chapter{Brain Connectivity}
+\input{tex/connectivity}
+
+\chapter{Information Theory}
+\input{tex/information-theory}
+
+\chapter{EEG Experiment}
+\input{tex/experiment}
+
+\chapter{Evaluation}
+\input{tex/evaluation}
+
+\chapter{Implementation}
+\input{tex/implementation}
+
+\chapter{Related Work}\label{related}
+\input{tex/related-work}
+
+\chapter{Future Work}
+\input{tex/future-work}
+
+\chapter{Conclusion}\label{conclusion}
+\input{tex/conclusion}
+
+% \appendixpage*
+% \appendix
+
+\backmatter
+
+% The bibliography comes after the appendices.
+% You can replace the standard "abbrv" bibliography style by another one.
+\bibliographystyle{abbrv}
+\bibliography{bib/main}
+
+\end{document}
