@@ -163,8 +163,9 @@ def mutualInformationMulti(bins, *X):
     elif len(X) == 2:
         return mutualInformation(bins, X[0], X[1])
     else:
-        elem = (-1)**(len(X))
-        return (elem * mutualInformationMulti(bins, *(X[:-1]))) - (elem * mutualInformationConditionalMulti(bins, X[-1], *(X[:-1])))
+        return mutualInformationMulti(bins, *(X[:-1])) - mutualInformationConditionalMulti(bins, X[-1], *(X[:-1]))
+        # elem = (-1)**(len(X))
+        # return (elem * mutualInformationMulti(bins, *(X[:-1]))) - (elem * mutualInformationConditionalMulti(bins, X[-1], *(X[:-1])))
 
 """The following functions are used to 
     manipulate the input data
@@ -207,7 +208,8 @@ def compare_common(loc, tmp, fig, data, pre="", func=(lambda bins, *X:
     # Compare the common time series between abstract, concrete and resting state
     # gen = lambda *X: generate_timeseries_per_channel(200, range(0, 4), range(0, 340), (lambda bins, *X: 
     #     mutualInformationMulti(bins, *[random.sample(set(x), 490) for x in X])), *X)
-    gen = lambda *X: generate_timeseries_per_channel(200, range(0, 4), range(0, 340), func, *X)
+    bins = 90
+    gen = lambda *X: generate_timeseries_per_channel(bins, range(0, 4), range(0, 340), func, *X)
     
     commonAbs = data['CommonAbstractness_TimeSeries']
     commonCon = data['CommonConcreteness_TimeSeries']
@@ -216,16 +218,16 @@ def compare_common(loc, tmp, fig, data, pre="", func=(lambda bins, *X:
     exp1 = perform_experiment(loc, tmp, 'CommonAbsCon', lambda: gen(commonAbs, commonCon))
     exp2 = perform_experiment(loc, tmp, 'CommonAbsRest', lambda: gen(commonAbs, common))
     exp3 = perform_experiment(loc, tmp, 'CommonConRest', lambda: gen(commonCon, common))
+    exp4 = perform_experiment(loc, tmp, 'CommonAbsConRest', lambda: gen(commonAbs, commonCon, common))
 
     rest = perform_experiment(loc, tmp, 'CommonRest', lambda: gen(common))
     absract = perform_experiment(loc, tmp, 'commonAbs', lambda: gen(commonAbs))
     concrete = perform_experiment(loc, tmp, 'commonCon', lambda: gen(commonCon))
 
     for i in range(0, 4):
-        # visualize_common(loc, fig, [exp1[i], exp2[i], exp3[i]], ['AbsCon', 'AbsRest', 'ConRest'], pre+'channel-' + str(i), 'Comparison of bivariate mutual information')
-        # visualize_common(loc, fig, [rest[i], absract[i], concrete[i]], ['Rest', 'Abs', 'Con'], pre+'entropy-' + str(i), 'Entropy')
         visualize_common(loc, fig, [exp1[i], exp2[i], exp3[i], rest[i], absract[i], concrete[i]], ['AbsCon', 'AbsRest', 'ConRest', 'Rest', 'Abs', 'Con'], pre+'all-channel-' + str(i), 'Comparison of bivariate mutual information')
-        visualize_common(loc, fig, [100*exp1[i]/absract[i], 100*exp1[i]/concrete[i]], ['Abs', 'Con'], pre+'comp-' + str(i), 'Comparison', ylabel='percentage (%)')
+        visualize_common(loc, fig, [exp1[i], exp2[i], exp3[i], rest[i], absract[i], concrete[i], exp4[i]], ['AbsCon', 'AbsRest', 'ConRest', 'Rest', 'Abs', 'Con', 'All'], pre+'mul-all-channel-' + str(i), 'Comparison of multivariate mutual information')
+        # visualize_common(loc, fig, [100*exp1[i]/absract[i], 100*exp1[i]/concrete[i]], ['Abs', 'Con'], pre+'comp-' + str(i), 'Comparison', ylabel='percentage (%)')
     plt.close("all")
     
 def visualize_common(loc, fig, data, names, channel, title, xlabel='time', ylabel='information (bits)'):
@@ -266,14 +268,16 @@ def experiments(loc, tmp, fig, data):
     subject_common(loc, tmp, fig, data)
     subject_common(loc, tmp, fig, data, True, app="10trials", amount=10)
     subject_common(loc, tmp, fig, data, True, app="40trials", amount=40)
+    subject_common(loc, tmp, fig, data, True, app="80trials", amount=80)
+    subject_common(loc, tmp, fig, data, True, app="100trials", amount=100)
     
 # Perform an experiment and use caching
 def perform_experiment(loc, tmp, name, func, ignore_tmp=False):
     return func()
-    if ignore_tmp or not os.path.isfile(tmp + name + '.pickle'):
-        return picklewriter(loc+tmp, name, func())
-    else:
-        return picklereader(loc+tmp, name)
+    # if ignore_tmp or not os.path.isfile(tmp + name + '.pickle'):
+    #     return picklewriter(loc+tmp, name, func())
+    # else:
+    #     return picklereader(loc+tmp, name)
 
 # Create a directory if it does not exist yet
 def ensure_dir(file_path):

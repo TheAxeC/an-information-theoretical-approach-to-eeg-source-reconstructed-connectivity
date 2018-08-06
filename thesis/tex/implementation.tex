@@ -1,3 +1,154 @@
-\section{Language}
+This chapter discusses the implementation made for the analysis described in the previous section. The implementation is important for several different reasons. For the sake of reproducability, it is important that it is understood why certain implementation choices were made. 
+
+Secondly, we strive for open science. Open science is about making research publicly available for society. A desired outcome is to be able to make the information theoretical analysis framework openly available for others to use. This also means that certain choices need to be made during the implementation.
+
+This chapter starts with a motivation for the choice of the programming language, Python, used for the implementation. The data which needed to be analysed was available in a Matlab format. In order to read the data in Python, the data needed to be converted into a different format. Finally, the implementation of the information theoretical equations are discussed.
+
+\section{Python Programming Language}
+
+The Python programming language is becoming more and more popular in a multitude of different fields. Python looks a lot like typical pseudocode, which makes it highly readable. Python is also modular and has a large standard library. These features are the main cause behind the surge in popularity. 
+
+The scientific community is becoming more interested in Python due to its numerical libraries, such as \textit{NumPy}, which are highly optimized. Arguably, these numerical libraries place Python on a equal footing with Matlab, another programming language popular among scientists. Unlike Matlab, Python is completely free and open-source, making it more readily available.
+
+Due to becoming more popular, domain-specific ecosystems of open-source Python software have been developed. The focus on reusable components is an essential aspect of scientific computing within computational neuroscience. 
+
+The different features of Python make it a desirable programming language for information theoretical analysis. The numerical library \textit{NumPy} can easily handle the source-reconstructed EEG data used within this thesis. Secondly, we want to contribute to the open-source community by providing a library for information theoretica analysis of source-reconstructed EEG data.
+
+One immediate disadvantage is that the data is provided as Matlab data. Since Python cannot directly handle Matlab data, a conversion has to be made. Considering the conversion is only a minor inconvenience and happens only once, it was not considered detrimental to the choice of Python.
 
 \section{Data Conversion}
+
+The data is stored in Matlab format which Python cannot work with. In order to be able to utilise Python, the data has to be converted into a format that Python can use. The conversion is done using a Matlab script shown in figure~\ref{matlabjson}. 
+
+The Matlab script converts a Matlab data structure into JSON. JSON is an universal format. Nearly every programming language has a library available to read a JSON file. The Matlab script has 5 different arguments. $loc\_mat$ and $name\_mat$ indicate which Matlab file to load. $loc\_json$ and $name\_json$ indicate which JSON file to write to. $name\_data$ indicates which variable from the matlab file has to be exported.
+
+An important note is that JSON is a textual format, not a binary. This causes a small loss of precision. Matlab internally stores real numbers as double-precision floating point numbers. Since JSON is textually, it stores real numbers as a decimal number, as a string. Due to the nature of a floating point representation, converting a float into a string and back into a float is not necessarily lossless. Luckily, the error is negligible.  
+
+\begin{figure}[H]
+\caption{Matlab JSON Encoding}
+\label{matlabjson}
+\begin{lstlisting}[language=Matlab]
+function [] = convertToJSON(loc_mat, name_mat, name_data, loc_json, name_json)
+    data = load(strcat(loc_mat, name_mat));
+    json = jsonencode(data.(name_data));
+    fid = fopen(sprintf('%s%s%s', loc_json, name_json, '.json'),'wt');
+    fprintf(fid, '%s', json);
+    fclose(fid);
+end
+\end{lstlisting}
+\end{figure}
+
+The Matlab script is called from within Python. Matlab provides bindings to Python. Using these bindings, Matlab scripts can be called from within Python. Figure~\ref{matlabpython} shows the primary Python code used to call the Matlab scripts. 
+
+\begin{figure}[H]
+\caption{Matlab within Python}
+\label{matlabpython}
+\begin{lstlisting}[language=Python]
+eng = matlab.engine.start_matlab()
+for name_mat in mat:
+    datasets = mat[name_mat]
+    for name_data, name_json in datasets:
+        # Check if the json file has been generated already
+        if not os.path.isfile(loc_json + name_json + ".json"):
+            eng.convertToJSON(loc_mat, name_mat, name_data, loc_json, name_json, nargout=0)
+\end{lstlisting}
+\end{figure}
+
+So far, we have converted the Matlab data in a JSON format. However, for data analysis, JSON is not a perfect choice. Reading large JSON files is very slow. For this reason, a second conversion is done. The JSON files are converted into pickle files. Pickle is a binary file format that is specifically designed for Python. Pickle files load relatively fast, which makes the experiments faster to compute.
+
+\section{Information Theoretical Equations}
+
+With the data readily available within Python, the only ingredient left before the experiments can begin are the information theoretical equations. As explained in Section~\ref{multivariate}, information theoretical equations can be reduced into a sum of joint entropies. This makes the implementation easier and cleaner. 
+
+The main function of importance is the implementation of the entropy equation. Figure~\ref{impl:entropy} shows the implementation. The $*X$ notation in Python is used to indicate a variable amount of parameters. This entropy function models the multivariate joint entropy equation (Equation~\ref{multivariateentropy}). The histogram function from numpy is used to accomplish the binning. 
+
+\begin{figure}[H]
+\caption{Multivariate Entropy}
+\label{impl:entropy}
+\begin{lstlisting}[language=Python]
+def entropy(bins, *X):
+    # Binning of the data
+    data = np.histogramdd(X, bins=bins)
+    # Calculate probabilities
+    data = data[0].astype(float)/data[0].sum()
+    # Compute H(X, Y, ..., Z) = sum(P(x, y, ..., z) * log2(P(x, y, ..., z)))
+    return np.sum(-data * np.log2(data+sys.float_info.epsilon))
+\end{lstlisting}
+\end{figure}
+
+With the entropy function, we can make the other functions. The translation of the information theoretical equations into Python is very straightforward. The simplicity can be seen in figure~\ref{impl:condetr} and figure~\ref{impl:mutual}. These figures model, respectively, equation~\ref{joint} and equation~\ref{info:mutual}.
+
+\begin{figure}[H]
+\caption{Conditional Entropy}
+\label{impl:condetr}
+\begin{lstlisting}[language=Python]
+def conditionalEntropy(bins, X, Y):
+    # Compute H(X|Y) = H(X,Y) - H(Y)
+    entro2 = entropy(bins, Y)
+    entroJoint = entropy(bins, X, Y)
+    return entroJoint - entro2
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\caption{Mutual Information}
+\label{impl:mutual}
+\begin{lstlisting}[language=Python]
+def mutualInformation(bins, X, Y):
+    # Compute I(X,Y) = H(X) + H(Y) - H(X,Y)
+    entro1 = entropy(bins, X)
+    entro2 = entropy(bins, Y)
+    entroJoint = entropy(bins, X, Y)
+    return entro1 + entro2 - entroJoint
+\end{lstlisting}
+\end{figure}
+
+Utilising the $*X$ notation in Python, all equations can be implemented in their multivariate versions. Figure~\ref{impl:mulcondetr} implements the multivariate conditional entropy, seen in equation~\ref{condentropy} and equation~\ref{condentropy2}. Figure~\ref{impl:mulmutual} implements multivariate mutual information, seen in equation~\ref{mut}. Finally, figure~\ref{impl:mulcondmutual} implements multivariate conditional mutual information, seen in equation~\ref{condmut}. It should be noted that figure~\ref{impl:condetr} and figure~\ref{impl:mutual} become unnecessary with the multivariate versions available ($mutualInformation(bins, X, Y) == mutualInformationMulti(bins, [X, Y])$).
+
+\begin{figure}[H]
+\caption{Multivariate Conditional Entropy}
+\label{impl:mulcondetr}
+\begin{lstlisting}[language=Python]
+def conditionalEntropyMulti(bins, XX, YY):
+    # X and Y should be lists of random variables
+    # XX = X_1,...,X_n
+    # YY = Y_1,...,Y_n
+    # Compute H(XX|YY) = H(XX, YY) - H(YY)
+    # Compute H(X_1,...,X_n|Y_1,...,Y_n) = H(X_1,...,X_n, Y_1,...,Y_n) - H(Y_1,...,Y_n)
+    return entropy(bins, *(XX + YY)) - entropy(bins, *YY)
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\caption{Multivariate Mutual Information}
+\label{impl:mulmutual}
+\begin{lstlisting}[language=Python]
+def mutualInformationMulti(bins, *X):
+    subsets = get_subsets(*X)
+    entr = 0
+    for sub in subsets:
+        entr += (-1)**(len(sub)) * entropy(bins, sub)
+    return entr
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\caption{Multivariate Conditional Mutual Information}
+\label{impl:mulcondmutual}
+\begin{lstlisting}[language=Python]
+def mutualInformationConditionalMulti(bins, Y, *X):
+    subsets = get_subsets(*X)
+    entr = 0
+    for sub in subsets:
+        entr += (-1)**(len(sub)) * conditionalEntropyMulti(bins, sub, [Y])
+    return entr
+\end{lstlisting}
+\end{figure}
+
+\section{Summary}
+
+This chapter shows the implementation that was developed for the information theoretical analysis. The importance of choosing the correct programming language is highlighted, and the reasons for choosing Python have been discussed. 
+
+The data conversion has been discussed in depth for several reasons. It shows that the choice of the programming language for the analysis does not necessarily need to depend on the specific data format. The work required to convert data outweighs the disadvantages of working with a programming language that is not desired.
+
+Finally, the discussion of the implementation of the information theoretical equations shows the elegance of Python. It shows that equations can be fairly easily converted into Python and it shows the usefullness of formulating the equations as a sum of entropies. As a final message, this chapter shows that the implementation itself is just as important as the actual data analysis.

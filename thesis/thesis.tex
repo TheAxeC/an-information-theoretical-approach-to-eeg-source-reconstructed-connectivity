@@ -9,7 +9,11 @@
 \setup{filingcard,
   translatedtitle=,
   udc=681.3*I20,
-  shortabstract={}}
+  shortabstract={
+Determining how distinct brain regions are connected and communicate with each other will shed light on how behaviour emerges. In EEG studies, interpreting connectivity measures can be problematic, due to the high correlation between signals recorded from the scalp surface, a result of the volume conductance of the scalp and skin. Therefore, meaningful connectivity patterns can be measured only from the from the spatiotemporal distribution of localised cortical sources, generally referred to as source reconstruction. Still, spurious connectivity issues may persist in source reconstructed EEG data, rendering it vital to choose an appropriate measure of connectivity.
+This thesis takes an information theoretical approach, which concerns model-free, probability based methods such as Conditional Mutual Information, Directed Information, and Directed feature information. We will investigate how these measures are affected by volume conduction, using as ground truth connectivity between simulated cortical sources in the brainstorm toolbox. In order to validate our methods further, these tools will also be compared with their statistical counterparts such as partial correlation, granger causality and dynamic causal modelling.
+The student will start by studying state-of-the-art literature concerning source localisation and the problem of volume conduction. The student will also familiarise himself with information theoretical measures of brain connectivity. Afterwards, these measures will be applied to high density EEG datasets provided by the lab of computational neuroscience, but also to simulated source activity as a validation. The novelty lies in the usage of these information theoretical algorithms for source-reconstructed activity.
+}}
 
 % Choose the main text font (e.g., Latin Modern)
 \setup{font=lm}
@@ -45,6 +49,13 @@
 
 % \input{tex/00-macros}
 
+\lstset{
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+}
+
 \begin{document}
 
 \renewcommand{\prefacename}{Acknowledgements}
@@ -56,12 +67,16 @@
 
 \tableofcontents*
 
-\begin{abstract}
-
-\end{abstract}
-
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em}
+
+\begin{abstract}
+Determining how distinct brain regions are connected and communicate with each other will shed light on how behaviour emerges. In EEG studies, interpreting connectivity measures can be problematic, due to the high correlation between signals recorded from the scalp surface, a result of the volume conductance of the scalp and skin. Therefore, meaningful connectivity patterns can be measured only from the from the spatiotemporal distribution of localised cortical sources, generally referred to as source reconstruction. Still, spurious connectivity issues may persist in source reconstructed EEG data, rendering it vital to choose an appropriate measure of connectivity.
+
+This thesis takes an information theoretical approach, which concerns model-free, probability based methods such as Conditional Mutual Information, Directed Information, and Directed feature information. We will investigate how these measures are affected by volume conduction, using as ground truth connectivity between simulated cortical sources in the brainstorm toolbox. In order to validate our methods further, these tools will also be compared with their statistical counterparts such as partial correlation, granger causality and dynamic causal modelling.
+  
+The student will start by studying state-of-the-art literature concerning source localisation and the problem of volume conduction. The student will also familiarise himself with information theoretical measures of brain connectivity. Afterwards, these measures will be applied to high density EEG datasets provided by the lab of computational neuroscience, but also to simulated source activity as a validation. The novelty lies in the usage of these information theoretical algorithms for source-reconstructed activity.
+\end{abstract}
 
 \listoffigures
 
@@ -77,16 +92,16 @@
 \chapter{Brain Connectivity}
 \input{tex/connectivity}
 
-\chapter{Information Theory}
+\chapter{Information Theory}\label{information-theory}
 \input{tex/information-theory}
 
 \chapter{EEG Experiment}
 \input{tex/experiment}
 
-\chapter{Evaluation}
+\chapter{Evaluation}\label{evaluation}
 \input{tex/evaluation}
 
-\chapter{Implementation}
+\chapter{Implementation}\label{implementation}
 \input{tex/implementation}
 
 \chapter{Related Work}\label{related}
@@ -107,5 +122,6 @@
 % You can replace the standard "abbrv" bibliography style by another one.
 \bibliographystyle{abbrv}
 \bibliography{bib/main}
+\nocite{*}
 
 \end{document}

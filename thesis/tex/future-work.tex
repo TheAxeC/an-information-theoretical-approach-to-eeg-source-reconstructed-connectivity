@@ -1,5 +1,42 @@
+Even though this thesis has come to a close, there are still many opportunities to take and avenues to explore. The results from this thesis shows that there is a lot of promise for an information theoretical approach for EEG source-reconstructed data. 
+
 \section{Directed Information}
 
-\section{Open Source Connectivity Package}
+In section~\ref{directed-information}, directed information was described. This is a very interesting algorithm that can lead to many interesting results. Directed information allows information flow between two processes to be calculated. 
 
-\section{Data Flow Connectivity}
+This is especially useful for information flow and connectivity. In the case of the source-reconstructed EEG data used in this thesis, directed information can be used to compute the flow of information between different regions in the brain. 
+
+This could be useful to further investigate what the activity within the common region (between abstractness and concreteness) means. One of the possible questions could be, does the flow of information start within the common region, or does it start in the seperate regions and then flow to the common region.
+
+\begin{equation}
+I(X^n \rightarrow Y^n) = \sum^{n}_{i=1}I(X^i, Y_i | Y^{i-1})
+\end{equation}
+
+\section{Open Source Connectivity Package}
+The implementation has been described in-depth in chapter~\ref{implementation}. This was explained in-depth for multiple purposes. Being able to use the source code to develop an open-source connectivity package is one of the main reasons. 
+
+Currently, the implementation is not in a state where it can be released as an open-source toolbox. Other connectivity measures need to be added to the source code and the current implementation needs to be cleaned-up. 
+
+\section{Comparison with Granger Causality}
+
+In this thesis, the information theoretical equations have not been compared to other connectivity measures. Most notably, the granger causality could be compared against. 
+
+\section{Multivariate Mutual Information Alternatives}
+
+Multivariate mutual information can be difficult to interpret. This is especially the case when the multivariate mutual information is negative. The main cause is that multivariate mutual information heavily shows synergies and redundancies.
+
+However, the multivariate mutual information described in this thesis, interaction information, is not the only generalisation for mutual information. There is also total correlation and dual total correlation. These are non-negative generalizations of mutual information.
+
+Total correlation measures the divergence of the joint entropy to the independent entropies.
+
+\begin{equation}
+C(X^1,...,X^n) = [\sum^{n}_{i=1}H(X^i)] - H(X^1,...,X^n)
+\end{equation}
+
+Dual total correlation is bounded by the joint entropy.
+
+\begin{equation}
+D(X^1,...,X^n) = H(X^1,...,X^n) - \sum^{n}_{i=1}H(X^i | X^1,...,X^{i-1},X^{i+1},...,X^n)
+\end{equation}
+
+Both of these methods are rarely used within the context of computational neuroscience. Due to the strength of being a non-negative generalizations of mutual information, the measure is easier to interpet. It would therefore be interesting to see how useful total correlation and dual total correlation can be when dealing with EEG source-reconstructed data.
