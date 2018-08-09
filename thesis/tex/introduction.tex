@@ -1,1 +1,54 @@
-\section{Introduction}
+Within the field of computational neuroscience, extensive research is being done on the connectivity of brain regions. Understanding how distinct brain regions are connected can answer many different questions. It will shed light on how behaviour emerges. 
+
+There are multiple ways to study brain connectivity. Brain connectivity can be studied on different levels, such as microscale or macroscale. Another question is what kind of connectivity is being measured. There is a distinction between the structural (or anatomical) connectivity and the functional connectivity. At the macroscale, functional connectivity can be measured with multiple imaging techniques. One popular imaging technique is EEG.
+
+In EEG studies, interpreting connectivity measures can be problematic, due to the high correlation between signals recorded from the scalp surface, a result of the volume conductance of the scalp and skin. Therefore, meaningful connectivity patterns can be measured only from the from the spatiotemporal distribution of localised cortical sources, generally referred to as source reconstruction. Still, spurious connectivity issues may persist in source reconstructed EEG data, rendering it vital to choose an appropriate measure of connectivity.
+
+This thesis takes an information theoretical approach, which concerns model-free, probability based methods such as Conditional Mutual Information and Directed Information. These methods are applied on real data, provided by the lab of computational neuroscience. This dataset contains source-reconstructed EEG data, recorded in an experiment revolving around semantic processing. 
+
+The experiment focussed on two word categories: abstract words and concrete words. The data contains several brain regions of interest. The semantic processing of abstract and concrete words is slightly different. Some of the semantic processing is done in separate brain regions. There also is a region where semantic processing occurs in both the abstract and concrete experiments, in this thesis, this is called the common region.
+
+\section{Research Questions}
+
+From the motivation, there are two big aspects that this thesis deals with. There is information theory and source-reconstructed EEG Data. The novelty of this thesis lies in the usage of these information theoretical algorithms for source-reconstructed EEG data.
+
+\begin{itemize}
+\item How can information theoretical measures be applied to source-reconstructed EEG Data?
+\item Which observations can be made by applying these information theoretical measures on a high density EEG dataset provided by the lab of computational neuroscience?
+\end{itemize}
+
+\section{Approach}
+
+The goal of this thesis, as well as it's main contribution, is to apply information theoretical measures on a high density EEG dataset provided by the lab of computational neuroscience. There are two steps to accomplish this. First, an implementation has to be made that can perform an information theoretical analysis of source-reconstruted EEG Data. Secondly, the information theoretical measures are applied to a dataset. Important in this step is to decide how to analyse the data.
+
+\begin{enumerate}
+\item Study of the relevant state-of-the-art literature and theoretical background. This includes source reconstruction, brain connectivity and information theory.
+\item Development of framework for information theoretical analysis of source-reconstruted EEG Data.
+\item Application of information theoretical measures to high density EEG dataset provided by the lab of computational neuroscience.
+\end{enumerate}
+
+\section{Results}
+
+The main novelty lies in the application of information theoretical algorithms for source-reconstructed EEG data. Behind this novelty, there are several different deliverables that made it possible to reach the goal of this thesis. 
+
+The implementation of the information theoretical algorithms is a first result of this thesis. The implementation is the backbone behind the thesis. The implementation consists out of three parts. There is the data conversion, which converts the source-reconstructed EEG data into multiple format. Secondly, methods for calculating the correct amount of bins to discretize the continious data have been implemented. 
+
+Finally, the actual information theoretical equations have been implemented. The implementation is developed to be of general use, meaning that it isn't too difficult to convert the implementation into an open source connectivity package.
+
+A second result of this thesis is the actual analysis of the high density EEG dataset provided by the lab of computational neuroscience. The main conclusion made in the analysis of the EEG dataset, is that, within the common region, the actual semantic processing is quite different between the semantic processing of abstract words and the semantic processing of concrete words.
+
+\section{Structure of the Thesis}
+
+Chapter~\ref{source-reconstruction} discusses source reconstruction. It starts by explaining what source reconstruction entails and why it is important. Afterwards, an explanation is given about the reasons that spurious connectivity issues may still persist in source reconstructed EEG data.
+
+Chapter~\ref{connectivity} gives a background of brain connectivity and volume conduction. this chapter hightlights the different kinds of connectivity and brievely discusses them.
+
+Chapter~\ref{information-theory} provides a background about information theory. This chapter starts by explaining the concept of information entropy. Using this concept, the different aspects from information theory are discussed, including joint entropy, mutual information, multivariate methods and directed information. Finally, this chapter details methods on how to use information theory on continuous data.
+
+Chapter~\ref{eeg-experiment} details the experiment that generated the data which this thesis analyses. This chapter starts by detailing the reasons behind the experiment and then details the experiment itself.
+
+Chapter~\ref{evaluation} will go in depth into the actual analysis that has been done on the data. The binning and the different analysis experiments are described. 
+
+Chapter~\ref{implementation} goes in depth into the source code that has been developed for the analysis. There are several important aspects to be discussed about the source code, such as the programming language and the implementation of the equations.
+
+Chapter~\ref{related} brievely discusses some related work. More specifically, granger causality is detailed. Chapter~\ref{future-work} details several interesting directions we can take this research. Considering the conclusion of this thesis, that information theoretical algorithms work well on source-reconstructed EEG data, many new paths open for further investigation. Finally, chapter~\ref{conclusion} concludes the thesis.

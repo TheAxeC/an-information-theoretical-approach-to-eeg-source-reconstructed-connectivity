@@ -40,7 +40,7 @@ In each trial, a single white word is shown on a black screen for 300ms, followe
 
 \begin{figure}[!htb]
 \caption{Binning representation.}
-\label{entropy}
+\label{experiment}
     \centering
     \includegraphics[width=\textwidth]{fig/experiment}
 \end{figure}
@@ -51,5 +51,12 @@ For our source reconstruction analysis we used the Brainstorm toolbox (Tadel et 
 In order to verify the correctness of our procedure, we attempted to reproduce the results using different source localization algorithms, as is recommended by (Mahjoory et al., 2017). We did not pursue the entire statistical procedure, however, we did analyze our initial results by taking the average over all trials regardless of semantic features, using the four methods available in the brainstorm toolbox: wMNE, dSPM, sLORETA, and unconstrained sLORETA. Manual inspection of the results with these methods revealed that the spatial distributions are similar over time albeit with different degrees of spatial smoothing.
 
 \section{ROI selection}
- 
-(TODO)
+
+As mentioned, we used sLORETA for source map normalization. Normalizing the current density maps with respect to a reference level (estimated in our case, from pre-stimulus baseline) provides a statistical map, which is essential the signal to noise ratio of the current estimate as a function of location. Therefore we use the normalized source maps to evaluate the significance of the data and select our ROIs. For both paradigms, we averaged the sLORETA statistical maps over all trials, and eliminated activity below 75\% of the maximum activity. Afterwards we overlapped the maps for both paradigms and selected regions that were commonly active, and had an estimated square size of larger than 3cm2. This resulted in four regions on the inferior temporal gyrus, temporal pole, inferior frontal, and anterior orbital gyrus.
+
+\begin{figure}[!htb]
+\caption{Visualization of the Selected Brain Regions.}
+\label{experiment-2}
+    \centering
+    \includegraphics[width=\textwidth]{fig/experiment-2}
+\end{figure}

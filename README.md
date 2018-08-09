@@ -19,24 +19,3 @@ The student will start by studying state-of-the-art literature concerning source
 [5] Tadel, François, et al. "Brainstorm: a user-friendly application for MEG/EEG analysis." Computational intelligence and neuroscience2011 (2011): 8.
 
 [6] Ghumare, Eshwar, et al. "Comparison of different Kalman filter approaches in deriving time varying connectivity from EEG data." Engineering in Medicine and Biology Society (EMBC), 2015 37th Annual International Conference of the IEEE. IEEE, 2015.
-
-## Meeting
-
-interaction information
-    conditioning to find directed
-
-collider/suppressor variable
-
-h(x,y) > h(x) + h(y)
-
-guassian caupula
-    for few trials
-Robin Ince
-
-permutation significance
-
-granger causality vs directed information
-estimater = covariance matrix
-    then linear granger
-
-[4] Ince, Robin AA, et al. "A statistical framework for neuroimaging data analysis based on mutual information estimated via a Gaussian copula." Human brain mapping 38.3 (2017): 1541-1573.
