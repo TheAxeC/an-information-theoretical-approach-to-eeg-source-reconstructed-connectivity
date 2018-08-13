@@ -1,12 +1,12 @@
 This chapter discusses the information theoretical analysis of the dataset. The source code developed for the analysis has been implemented in the Python programming language. The actual implementation will be discussed in-depth in chapter~\ref{implementation}. 
 
-The dataset contains the source-reconstructed data from four EEG channels. The datapoint within the dataset encompass 13 subjects. The source-reconstructed data from the abstractness and concreteness eperiment is given from 3 different regions. 
+The dataset contains source-reconstructed data. The trials within the dataset encompass 13 subjects and contains 3404 trials. Each trial consists of 340 data points, or samples, because each trial is 1.7 seconds long with a 200Hz sampling rate. The dataset represents 4 cortical regions. For these 4 regions, there are three kinds of time series, data recorded from these regions during abstract word representation, concrete word representation, and rest. These time series are used for the analysis.
 
-One region represents the cortical area which is active during both the abstractness and concreteness experiments. For this region, the data from both experiments are given. Another region represents the cortical area which is only active during the abstractness experiment and the final region represents the cortical area which is only active during the concreteness experiment. Finally, resting state data was available for all 3 regions.
+The analysis described in this chapter is performed on all 4 regions. The results are consistent across the 4 regions. Therefore, the figures in this chapter focus on a single region in order to remove redundancy.
 
 First, this chapter will discuss the procedure for finding the amount of bins that will be used throughout the analysis. In order to be able to utilise the binning method for entropy estimation, the correct number of bins needs to be computed.
 
-Afterwards, the main analysis is discussed. The common region which were active during both the abstractness and concreteness experiments are the main focus. Secondly, the analysis is adapted in order to analyse the different subjects  independently. Finally, an analysis was made for a comparison between the active regions and the resting state counter parts.
+Afterwards, the main analysis is discussed. The cortical regions which were active during both the abstractness and concreteness experiments are the main focus. These are the 4 regions described above. Secondly, the analysis is adapted in order to analyse the different subjects  independently. Finally, an analysis was made for a comparison between the active regions and the resting state counter parts.
 
 \section{Calculating Bin Sizes}
 
@@ -21,11 +21,11 @@ Section~\ref{binning} discussed the discretization of continuous data. There are
 
 There is also equation~\ref{binequation}. Using this equation, the optimal bin size is calculated to be 90. Both the equation and empirical method find approximately the same result. For the analysis, a bin size of 90 has been chosen. 
 
-\section{Comparing the Common Region}\label{analysis1}
+\section{Comparing the Cortical Region}\label{analysis1}
 
-As explained before, the common region which were active during both the abstractness and concreteness experiments are the main focus. The main strength of an information theoretical approach is the measurement of mutual information. Mutual information can measure both linear and non-linear relationships. 
+As explained before, the time series recorded from the different regions during abstract word representation, concrete word representation, and rest are the main focus. The main strength of an information theoretical approach is the measurement of mutual information. Mutual information can measure both linear and non-linear relationships. 
 
-From the activity, we could see that some cortical areas are active during both the abstractness and concreteness experiments. Mutual information can tell us what kind of relationship there is between the abstractness and concreteness. There are several different possibilities. One theory is that the common region represents the semantic processing that is common between the abstractness and concreteness experiments.
+From the activity, we could see that some cortical areas are active during both the abstractness and concreteness experiments. Mutual information can tell us what kind of relationship there is between the abstractness and concreteness. There are several different possibilities. One theory is that the cortical region represents the semantic processing that is common between the abstractness and concreteness experiments.
 
 Figure~\ref{all-channel-1} shows the results of the analysis. $Abs$, $Con$ and $Rest$ represents the information entropy through time. $Abs$ is the information entropy from the abstractness experiment. $Con$ is the information from the concreteness experiment. 
 
@@ -49,7 +49,7 @@ Figure~\ref{venn} roughly visualizes these relationships information. There is s
 There are some conclusions to be made from this. First of all, some of the semantic processing of abstractness and concreteness in the same cortical area is shared. However, it seems that the same cortical area does not compute exactly the same features during semantic processing of abstract and concrete words. 
 
 \begin{figure}[!htb]
-\caption{Venn Diagram for Information in Common Region \cite{venn}.}
+\caption{Venn Diagram for Information in Cortical Region \cite{venn}.}
 \label{venn}
     \centering
     \includegraphics[width=0.8\textwidth]{fig/venn}
@@ -64,7 +64,7 @@ Figure~\ref{comp-1} shows this relation expressed as percentages. About 60\% to 
     \includegraphics[width=\textwidth]{fig/comp-1}
 \end{figure}
 
-\section{Comparing the Common Region: Multivariate}\label{analysis2}
+\section{Comparing the Cortical Region: Multivariate}\label{analysis2}
 
 So far, bivariate mutual information has been utilised. However, there is also the multivariate mutual information. This can be used to calculate the mutual information between the abstractness, concreteness and resting state. 
 
@@ -103,7 +103,7 @@ Negative multivariate mutual information indicates a synergy. Figure~\ref{common
 
 \section{Per Subject Comparison}
 
-An per-subject analysis has also been performed. With a per-subject analysis, we can see whether results would vary between different subjects and whether there are different conclusions to be made.
+A per-subject analysis has also been performed. With a per-subject analysis, we can see whether results would vary between different subjects and whether there are different conclusions to be made.
 
 Figure~\ref{all-trials} shows the analysis from section~\ref{analysis1} executed on a single subject. The figure looks very similar to figure~{all-channel-1}. This reaffirms the conclusion on a per-subject basis.
 
@@ -116,45 +116,45 @@ Figure~\ref{all-trials} shows the analysis from section~\ref{analysis1} executed
 
 \subsection{Effect of Trials Used}
 
-Another interesting avenue to pursue was analysing the effect of the amount of trials used within information theoretical equations. In other words, how much data do we need in order to get decent results. We expected that information theory would still deliver good results, even with relatively few data.
+Another interesting avenue to pursue was analysing the effect of the amount of trials used within information theoretical equations. In other words, how much data do we need in order to get decent results. We expected that information theory would still deliver good results, even with relatively little data.
 
-Several additional analyses were performed. Each analysis used a different amount of trials. The complete dataset contains 3404 datapoints, with an average of 262 datapoints per subject (per timepoint). With binning being done with 90 bins, this means that there are about 3 datapoints in each bin. 
+Several additional analyses were performed. Each analysis used a different amount of trials. The complete dataset contains 3404 trials, with an average of 262 trials per subject (per timepoint). With binning being done with 90 bins, this means that there are about 3 trials in each bin. 
 
-In order to see the effect of the amount of datapoints that are used, the information theoretical analysis was performed with 10, 40, 80 and 100 datapoints. 
+In order to see the effect of the amount of trials that are used, the information theoretical analysis was performed with 10, 40, 80 and 100 trials. 
 
-Figure~\ref{10-trials} shows the result from only using 10 datapoints. With 90 bins, most bins are completely empty. Due to this, the computed information entropy is very inaccurate. 
+Figure~\ref{10-trials} shows the result from only using 10 trials. With 90 bins, most bins are completely empty. Due to this, the computed information entropy is very inaccurate. 
 
 \begin{figure}[!htb]
-\caption{Comparison for Subject 1 - 10 datapoints}
+\caption{Comparison for Subject 1 - 10 trials}
 \label{10-trials}
     \centering
     \includegraphics[width=\textwidth]{fig/subject1_10trials_all-channel-1}
 \end{figure}
 
-Figure~\ref{40-trials} shows the result from only using 40 datapoints. In this case, the result starts becoming more accurate.
+Figure~\ref{40-trials} shows the result from only using 40 trials. In this case, the result starts becoming more accurate.
 
 \begin{figure}[!htb]
-\caption{Comparison for Subject 1 - 40 datapoints}
+\caption{Comparison for Subject 1 - 40 trials}
 \label{40-trials}
     \centering
     \includegraphics[width=\textwidth]{fig/subject1_40trials_all-channel-1}
 \end{figure}
 
-Figure~\ref{80-trials} shows the result from using 80 datapoints. With 80 datapoints, nearly every bin should be filled. From this point, the resolution starts becoming much more accurate. 
+Figure~\ref{80-trials} shows the result from using 80 trials. With 80 trials, nearly every bin should be filled. From this point, the resolution starts becoming much more accurate. 
 
 \begin{figure}[!htb]
-\caption{Comparison for Subject 1 - 80 datapoints}
+\caption{Comparison for Subject 1 - 80 trials}
 \label{80-trials}
     \centering
     \includegraphics[width=\textwidth]{fig/subject1_80trials_all-channel-1}
 \end{figure}
 
-Figure~\ref{100-trials} shows the result from using 100 datapoints. The resolution increases yet again. However, the new details that are visible in the graph do not cause more conclusions or results to be drawn. 
+Figure~\ref{100-trials} shows the result from using 100 trials. The resolution increases yet again. However, the new details that are visible in the graph do not cause more conclusions or results to be drawn. 
 
-This analysis shows that, if not enough data is available, information theoretical equations cannot reliably be used. For the 10 and 40 datapoint analyses, this is clearly shown. However, the 80 and 100 datapoint analyses show that even with relatively few datapoints, relative to the amount of bins used, the resolution is already quite clear.
+This analysis shows that, if not enough data is available, information theoretical equations cannot reliably be used. For the 10 and 40 datapoint analyses, this is clearly shown. However, the 80 and 100 datapoint analyses show that even with relatively few trials, relative to the amount of bins used, the resolution is already quite clear.
 
 \begin{figure}[!htb]
-\caption{Comparison for Subject 1 - 100 datapoints}
+\caption{Comparison for Subject 1 - 100 trials}
 \label{100-trials}
     \centering
     \includegraphics[width=\textwidth]{fig/subject1_100trials_all-channel-1}

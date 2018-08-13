@@ -1,7 +1,7 @@
 % \section{Information Theory}
 Information theory provides us the tools to study the information processing capabilities of different systems. These systems include computers, artificial intelligence and also the brain. The story of Information Theory begins with Shannon who provided the tools to estimate information \cite{shin1949mathematical}. The most fundamental aspect of information theory is the concept of the 'bit'. 
 
-As a standard, information theory deals with 'bits'. One bit of information represents a choice between two equally probable options. A perfectly balanced coin toss contains one bit of information. It has 50\% chance of landing on heads and 50\% chance of landing on tails. A bit is a measure of information and a measure of uncertainty. Thus uncertainty and information are tightly intertwined. If we are completely certain about a certain event, there is no information to be gained. 
+As a standard, information theory deals with 'bits'. One bit of information represents a choice between two equally probable options. A perfectly balanced coin toss contains one bit of information. It has 50\% chance of landing on heads and 50\% chance of landing on tails. A bit is a measure of information and a measure of uncertainty. Thus uncertainty and information are tightly intertwined. If we are completely certain about a certain event, there is no information to be gained. \cite{kannathal2005entropies}
 
 This chapter will cover the most important aspects of information theory. First and foremost, this means discussing entropy. Once we have an understanding of entropy, extensions can be discussed. These include joint entropy and conditional entropy. With these tools, we can go into the area of mutual information, which plays an important role in this thesis. Another important aspect is the generalisation into multivariate systems and dealing with continuous (as opposed to discrete) systems. Finally, some explanation is provided of coding theory and cybernetics.
 
@@ -167,7 +167,7 @@ Being able to reduce most equations into a sum of entropies becomes a useful abi
 
 Regular mutual information shows the amount of entropy that is shared between two or more random variables. The mutual information can capture both linear and non-linear relationships. However, mutual information cannot show the information flow between different variables. 
 
-In order to show the information flow, an extension to mutual information has to be made. This extension is called directed information. Directed information uses processes rather than variables. A process $X^n$ is a sequence, a vector of data $X_1,...,X_n$. A time series, by its nature, can be seen as a process.
+In order to show the information flow, an extension to mutual information has to be made. This extension is called directed information. Directed information uses processes rather than variables. A process $X^n$ is a sequence, a vector of data $X_1,...,X_n$. A time series, by its nature, can be seen as a process. \cite{blinowska2011review}
 
 \begin{equation}
 I(X^n \rightarrow Y^n) = \sum^{n}_{i=1}I(X^i, Y_i | Y^{i-1})
@@ -178,7 +178,7 @@ An additional note is that directed information is computationally expensive to 
 \section{Continuous Data}\label{binning}
 Up until this point, the discussed equations assumed that discrete data was available. However, within the context of neuroscience and the brain, data is almost always continuous in nature. In the case of EEG research, the data comprises of time series of electrical activity.
 
-In the case of this thesis, the data is a time series of source-reconstructed EEG data. In order to compute entropy with continuous data, the data needs to be discretized. There are multiple ways to discretize data:
+In the case of this thesis, the data is a time series of source-reconstructed EEG data. In order to compute entropy with continuous data, the data needs to be discretized \cite{ince2017statistical}. There are multiple ways to discretize data:
 
 \begin{itemize}
 \item Histogram analysis
@@ -191,11 +191,11 @@ In the case of this thesis, the data is a time series of source-reconstructed EE
 
 These ways utilise different tools, such as histograms, correlation, clustering, decision trees, probability distributions, in order to discretize the data. 
 
-The default choice is to utilise binning. Binning is a relatively simple process that is fast to compute. This is what makes binning attractive. Utilisation of other ways to discretize data is left for future work.
+The default choice is to utilise binning. Binning is a relatively simple process that is fast to compute. This is what makes binning attractive. Utilisation of other ways to discretize data is left for future work. 
 
 \subsection{Binning}
 
-Binning is the process of putting the continuous data into a predetermined number of bins. In order to avoid adding any kind of noise or bias to the data, every bin should have an equal width. In order to map the continuous data onto the bins, every bin needs to represent a certain interval. The interval of the first bin starts at the minimum value of the continues data. The interval of the last bin ends at the maximum value of the continuous data. The width of the bin is decided by the number of bins. 
+Binning is the process of putting the continuous data into a predetermined number of bins. In order to avoid adding any kind of noise or bias to the data, every bin should have an equal width. In order to map the continuous data onto the bins, every bin needs to represent a certain interval. The interval of the first bin starts at the minimum value of the continues data. The interval of the last bin ends at the maximum value of the continuous data. The width of the bin is decided by the number of bins. \cite{ince2017statistical}
 
 \begin{figure}[!htb]
 \caption{Binning representation.}
@@ -208,7 +208,7 @@ The big question is how many bins should be used to discretize the data. If too 
 
 The number of bins used has a large impact on the entropy, so making the correct choice is important. There are multiple ways to make the correct choice. The number of bins can be estimated empirically by plotting the entropy with varying bin sizes. Using this method, the issues that come with a too small or too large bin size can be vizualised. 
 
-There is another, more statistically sound, method for determining the appropriate amount of bins. There is the Freedman-Diaconis rule. This rule states that the optimal amount of bins is related to the interquartile range $Q_x$, the amount of data point $n$ and the minimum $min(x)$ and maximum $max(x)$ elements of the data:
+There is another, more statistically sound, method for determining the appropriate amount of bins. There is the Freedman-Diaconis rule. This rule states that the optimal amount of bins is related to the interquartile range $Q_x$, the amount of data point $n$ and the minimum $min(x)$ and maximum $max(x)$ elements of the data: 
 
 \begin{equation}\label{binequation}
 nbins = \frac{max(x) - min(x)}{2Q_xn^{-1/3}}

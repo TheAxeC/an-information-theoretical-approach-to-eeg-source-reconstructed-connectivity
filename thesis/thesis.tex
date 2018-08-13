@@ -10,9 +10,7 @@
   translatedtitle=,
   udc=681.3*I20,
   shortabstract={
-Determining how distinct brain regions are connected and communicate with each other will shed light on how behaviour emerges. In EEG studies, interpreting connectivity measures can be problematic, due to the high correlation between signals recorded from the scalp surface, a result of the volume conductance of the scalp and skin. Therefore, meaningful connectivity patterns can be measured only from the from the spatiotemporal distribution of localised cortical sources, generally referred to as source reconstruction. Still, spurious connectivity issues may persist in source reconstructed EEG data, rendering it vital to choose an appropriate measure of connectivity.
-This thesis takes an information theoretical approach, which concerns model-free, probability based methods such as Conditional Mutual Information, Directed Information, and Directed feature information. We will investigate how these measures are affected by volume conduction, using as ground truth connectivity between simulated cortical sources in the brainstorm toolbox. In order to validate our methods further, these tools will also be compared with their statistical counterparts such as partial correlation, granger causality and dynamic causal modelling.
-The student will start by studying state-of-the-art literature concerning source localisation and the problem of volume conduction. The student will also familiarise himself with information theoretical measures of brain connectivity. Afterwards, these measures will be applied to high density EEG datasets provided by the lab of computational neuroscience, but also to simulated source activity as a validation. The novelty lies in the usage of these information theoretical algorithms for source-reconstructed activity.
+Determining how distinct brain regions are connected and communicate with each other will shed light on how behaviour emerges. In EEG studies, interpreting connectivity measures can be problematic, due to the high correlation between signals recorded from the scalp surface, a result of the volume conductance of the scalp and skin. Therefore, meaningful connectivity patterns can be measured only from the from the spatiotemporal distribution of localised cortical sources, generally referred to as source reconstruction. Still, spurious connectivity issues may persist in source reconstructed EEG data, rendering it vital to choose an appropriate measure of connectivity. In this work, an information theoretical approach, which concerns model-free, probability based methods such as mutual information, conditional mutual information and interaction information, is taken. An information theoretical framework for Python is developed in order to operate on source reconstructed activity. This framework is used to perform a connectivity analysis of a high density source reconstructed EEG dataset, which was constructed in an experiment regarding semantic processing of abstract and concrete words. 
 }}
 
 % Choose the main text font (e.g., Latin Modern)
@@ -60,9 +58,9 @@ The student will start by studying state-of-the-art literature concerning source
 
 \renewcommand{\prefacename}{Acknowledgements}
 \begin{preface}
-  This thesis has been quite a long journey. I was able to get invested into an interesting field of research and learn a lot of new things. Both about research, and about myself. \\ 
+  For me, this thesis was an adventure through different unknown lands. Luckily, I had a guide in the form of my mentor and my supervisor. I was able to become familiar with an extraordinarily interesting field of research and I am excited to be able to continue my research within this field. \\ 
 \\
-  I would like to thank everybody who kept me busy and supported me the last year. I would also like to thank the jury for reading the text. 
+First and foremost, I would like to thank my mentor, Mansoureh Fahimi, and my supervisor, prof. Marc Van Hulle. I would also like to thank prof. dr. Daniele Marinazzo for his valuable advice during my research. Finally, an additional thanks goes to the assessors for reading the text. 
 \end{preface}
 
 \tableofcontents*
@@ -71,16 +69,11 @@ The student will start by studying state-of-the-art literature concerning source
 \setlength{\parskip}{1em}
 
 \begin{abstract}
-Determining how distinct brain regions are connected and communicate with each other will shed light on how behaviour emerges. In EEG studies, interpreting connectivity measures can be problematic, due to the high correlation between signals recorded from the scalp surface, a result of the volume conductance of the scalp and skin. Therefore, meaningful connectivity patterns can be measured only from the from the spatiotemporal distribution of localised cortical sources, generally referred to as source reconstruction. Still, spurious connectivity issues may persist in source reconstructed EEG data, rendering it vital to choose an appropriate measure of connectivity.
-
-This thesis takes an information theoretical approach, which concerns model-free, probability based methods such as Conditional Mutual Information, Directed Information, and Directed feature information. We will investigate how these measures are affected by volume conduction, using as ground truth connectivity between simulated cortical sources in the brainstorm toolbox. In order to validate our methods further, these tools will also be compared with their statistical counterparts such as partial correlation, granger causality and dynamic causal modelling.
-  
-The student will start by studying state-of-the-art literature concerning source localisation and the problem of volume conduction. The student will also familiarise himself with information theoretical measures of brain connectivity. Afterwards, these measures will be applied to high density EEG datasets provided by the lab of computational neuroscience, but also to simulated source activity as a validation. The novelty lies in the usage of these information theoretical algorithms for source-reconstructed activity.
+Determining how distinct brain regions are connected and communicate with each other will shed light on how behaviour emerges. In EEG studies, interpreting connectivity measures can be problematic, due to the high correlation between signals recorded from the scalp surface, a result of the volume conductance of the scalp and skin. Therefore, meaningful connectivity patterns can be measured only from the from the spatiotemporal distribution of localised cortical sources, generally referred to as source reconstruction. Still, spurious connectivity issues may persist in source reconstructed EEG data, rendering it vital to choose an appropriate measure of connectivity. In this work, an information theoretical approach, which concerns model-free, probability based methods such as mutual information, conditional mutual information and interaction information, is taken. An information theoretical framework for Python is developed in order to operate on source reconstructed activity. This framework is used to perform a connectivity analysis of a high density source reconstructed EEG dataset, which was constructed in an experiment regarding semantic processing of abstract and concrete words. 
 \end{abstract}
 
 \listoffigures
 
-% Now comes the main text
 \mainmatter
 
 \chapter{Introduction}
@@ -98,14 +91,11 @@ The student will start by studying state-of-the-art literature concerning source
 \chapter{EEG Experiment}\label{eeg-experiment}
 \input{tex/experiment}
 
-\chapter{Evaluation}\label{evaluation}
+\chapter{Analysis and Discussion}\label{evaluation}
 \input{tex/evaluation}
 
 \chapter{Implementation}\label{implementation}
 \input{tex/implementation}
-
-\chapter{Related Work}\label{related}
-\input{tex/related-work}
 
 \chapter{Future Work}\label{future-work}
 \input{tex/future-work}
@@ -113,15 +103,9 @@ The student will start by studying state-of-the-art literature concerning source
 \chapter{Conclusion}\label{conclusion}
 \input{tex/conclusion}
 
-% \appendixpage*
-% \appendix
-
 \backmatter
 
-% The bibliography comes after the appendices.
-% You can replace the standard "abbrv" bibliography style by another one.
 \bibliographystyle{abbrv}
 \bibliography{bib/main}
-\nocite{*}
 
 \end{document}
